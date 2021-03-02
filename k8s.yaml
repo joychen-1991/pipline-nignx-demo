@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo
+  namespace: devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-demo
+  template:
+    metadata:
+      labels:
+        app: nginx-demo
+    spec:
+      containers:
+      - image: registry.cn-hangzhou.aliyuncs.com/hiekn/nginx:<BUILD_TAG>
+        imagePullPolicy: IfNotPresent
+        name: nginx-demo
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-demo
+  namespace: devops
+spec:
+  selector:
+    app: nginx-demo
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    name: nginx-http
