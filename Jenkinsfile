@@ -1,7 +1,7 @@
 node('jnlp-slave') {
     stage('Clone') {
         echo "1.Clone Stage"
-        git url: "https://github.com/dongyali521521/nginx-demo.git"
+        git url: "https://github.com/joychen-1991/pipline-nignx-demo.git"
         script {
             build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
         }
@@ -11,13 +11,13 @@ node('jnlp-slave') {
     }
     stage('Build') {
         echo "3.Build Docker Image Stage"
-        sh "docker build -t dongyali521521/nginx-demo:${build_tag} ."
+        sh "docker build -t registry.cn-hangzhou.aliyuncs.com/hiekn/nginx:${build_tag} ."
     }
     stage('Push') {
         echo "4.Push Docker Image Stage"
-        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-            sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword}"
-            sh "docker push dongyali521521/nginx-demo:${build_tag}"
+        withCredentials([usernamePassword(credentialsId: 'alihub', passwordVariable: 'alihubPassword', usernameVariable: 'alihubUser')]) {
+            sh "docker login -u ${alihubUser} -p ${alihubPassword}"
+            sh "docker push registry.cn-hangzhou.aliyuncs.com/hiekn/nginx:${build_tag}"
         }
     }
     stage('Deploy') {
