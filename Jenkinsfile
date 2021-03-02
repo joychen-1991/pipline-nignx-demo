@@ -1,7 +1,7 @@
 node('jnlp-slave') {
     stage('Clone') {
         echo "1.Clone Stage"
-        git url: "https://github.com/joychen-1991/pipline-nignx-demo.git"
+        checkout scm
         script {
             build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
         }
