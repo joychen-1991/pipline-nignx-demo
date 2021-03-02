@@ -16,6 +16,7 @@ node('jnlp-slave') {
     stage('Push') {
         echo "4.Push Docker Image Stage"
         withCredentials([usernamePassword(credentialsId: 'alihub', passwordVariable: 'alihubPassword', usernameVariable: 'alihubUser')]) {
+            sh "echo ${alihubUser} ${alihubPassword}"
             sh "docker login -u ${alihubUser} -p ${alihubPassword}"
             sh "docker push registry.cn-hangzhou.aliyuncs.com/hiekn/nginx:${build_tag}"
         }
